@@ -1,0 +1,82 @@
+﻿@model List<Product>
+
+<div class="container">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2>
+                Product list
+            </h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Product" asp-action="Create" class="btn btn-primary">
+                <i class="bi bi-plus-square"></i> Create New Category
+            </a>
+        </div>
+    </div>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <td>
+                    Title
+                </td>
+                <td>
+                    Author
+                </td>
+                <td>
+                    ISBN
+                </td>
+                <td>
+                    List Price
+                </td>
+                <td>
+                    Price
+                </td>
+                <td>
+                    Price for 50+
+                </td>
+                <td>
+                    Price for 100+
+                </td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model)
+            {
+                <tr class="table-light">
+                    <th>
+                        @product.Title
+                    </th>
+                    <th>
+                        @product.Author
+                    </th>
+                    <th>
+                        @product.ISBN
+                    </th>
+                    <th>
+                        @product.ListPrice
+                    </th>
+                    <th>
+                        @product.Price
+                    </th>
+                    <th>
+                        @product.Price50
+                    </th>
+                    <th>
+                        @product.Price100
+                    </th>
+                    <th>
+                        <div class="w-75 btn-group" role="group">
+                            <a asp-controller="Product" asp-action="Edit" asp-route-id="@product.Id" class="btn btn-info mx-2">
+                                <i class="bi bi-pencil"></i> Edit
+                            </a>
+                            <a asp-controller="Product" asp-action="Delete" asp-route-id="@product.Id" class="btn btn-warning mx-2">
+                                <i class="bi bi-trash3"></i> Delete
+                            </a>
+                        </div>
+                    </th>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

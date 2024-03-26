@@ -1,37 +1,36 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MVC.DataAccess.Data;
 using MVC.DataAccess.Repository.IRepository;
 using MVC.Models;
 
-namespace MVCWebApplication.Controllers
+namespace MVCWebApplication.Areas.Admin.Controllers
 {
-    public class CategoryController : Controller
+    [Area("Admin")]
+    public class ProductController : Controller
     {
-        private readonly ICategoryRepository _cotegoryRepository;
-        public CategoryController(ICategoryRepository cotegoryRepository)
+        private readonly IUnitOfWork _unitOfWork;
+        public ProductController(IUnitOfWork unitOfWork)
         {
-            _cotegoryRepository = cotegoryRepository;    
+            _unitOfWork = unitOfWork;
         }
-
         public IActionResult Index()
         {
-            List<Category> objCategoryList = _cotegoryRepository.GetAll().ToList();
+            List<Product> objCategoryList = _unitOfWork.ProductRepository.GetAll().ToList();
             return View(objCategoryList);
         }
 
         public IActionResult Create()
         {
-            return View();  
+            return View();
         }
 
         [HttpPost]
-        public IActionResult Create(Category category)
+        public IActionResult Create(Product product)
         {
             if (ModelState.IsValid)
             {
-                _cotegoryRepository.Add(category);
-                _cotegoryRepository.Save();
-                TempData["success"] = "Category created successfully";
+                _unitOfWork.ProductRepository.Add(product);
+                _unitOfWork.Save();
+                TempData["success"] = "Product created successfully";
                 return RedirectToAction("Index");
             }
             return View();
@@ -39,25 +38,25 @@ namespace MVCWebApplication.Controllers
 
         public IActionResult Edit(int? id)
         {
-            if(id == null || id == 0)
+            if (id == null || id == 0)
             {
                 return NotFound();
             }
-            Category? category = _cotegoryRepository.Get(c => c.Id == id);
-            if(category == null)
+            Product? product = _unitOfWork.ProductRepository.Get(c => c.Id == id);
+            if (product == null)
             {
                 return NotFound();
             }
-            return View(category);
+            return View(product);
         }
 
         [HttpPost]
-        public IActionResult Edit(Category category)
+        public IActionResult Edit(Product product)
         {
             if (ModelState.IsValid)
             {
-                _cotegoryRepository.Update(category);
-                _cotegoryRepository.Save();
+                _unitOfWork.ProductRepository.Update(product);
+                _unitOfWork.Save();
                 TempData["success"] = "Category edited successfully";
                 return RedirectToAction("Index");
             }
@@ -70,24 +69,24 @@ namespace MVCWebApplication.Controllers
             {
                 return NotFound();
             }
-            Category? category = _cotegoryRepository.Get(c => c.Id == id);
-            if (category == null)
+            Product? product = _unitOfWork.ProductRepository.Get(c => c.Id == id);
+            if (product == null)
             {
                 return NotFound();
             }
-            return View(category);
+            return View(product);
         }
 
         [HttpPost, ActionName("Delete")]
         public IActionResult DeletePost(int? id)
         {
-            Category? category = _cotegoryRepository.Get(c => c.Id == id);
-            if (category == null)
+            Product? product = _unitOfWork.ProductRepository.Get(c => c.Id == id);
+            if (product == null)
             {
                 return NotFound();
             }
-            _cotegoryRepository.Remove(category);
-            _cotegoryRepository.Save();
+            _unitOfWork.ProductRepository.Remove(product);
+            _unitOfWork.Save();
             TempData["success"] = "Category deleted successfully";
             return RedirectToAction("Index");
         }

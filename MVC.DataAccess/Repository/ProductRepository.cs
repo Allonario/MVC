@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MVC.DataAccess.Data;
+﻿using MVC.DataAccess.Data;
 using MVC.DataAccess.Repository.IRepository;
 using MVC.Models;
 using System;
@@ -11,17 +10,16 @@ using System.Threading.Tasks;
 
 namespace MVC.DataAccess.Repository
 {
-    public class CategoryRepository : Repository<Category>, ICategoryRepository
+    public class ProductRepository : Repository<Product>, IProductRepository
     {
         private readonly ApplicationDbContext _db;
-        public CategoryRepository(ApplicationDbContext db): base(db) 
+        public ProductRepository(ApplicationDbContext db) : base(db)
         {
             _db = db;
         }
-
-        public void Update(Category obj)
+        public void Update(Product obj)
         {
-            _db.Categories.Update(obj);
+            _db.Products.Update(obj);
         }
     }
 }

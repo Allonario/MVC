@@ -1,0 +1,58 @@
+﻿@model Product
+
+<form method="post">
+    <div class="border p-3 m-4">
+        <div class="row pb-2">
+            <h2>Create Product</h2>
+        </div>
+        <div asp-validation-summary="All"></div>
+        <div class="mb-3 row p-1">
+            <label class="p-0">Title</label>
+            <input asp-for="Title" disabled class="form-control" />
+        </div>
+        <div class="mb-3 row p-1">
+            <label class="p-0">Author</label>
+            <input asp-for="Author" disabled class="form-control" />
+        </div>
+        <div class="mb-3 row p-1">
+            <label class="p-0">Description</label>
+            <input asp-for="Description" disabled class="form-control" />
+        </div>
+        <div class="mb-3 row p-1">
+            <label class="p-0">ISBN</label>
+            <input asp-for="ISBN" disabled class="form-control" />
+        </div>
+        <div class="mb-3 row p-1">
+            <label class="p-0">List Price</label>
+            <input asp-for="ListPrice" disabled class="form-control" />
+        </div>
+        <div class="mb-3 row p-1">
+            <label class="p-0">Price</label>
+            <input asp-for="Price" disabled class="form-control" />
+        </div>
+        <div class="mb-3 row p-1">
+            <label class="p-0">Price for 50</label>
+            <input asp-for="Price50" disabled class="form-control" />
+        </div>
+        <div class="mb-3 row p-1">
+            <label class="p-0">Price for 100</label>
+            <input asp-for="Price100" disabled class="form-control" />
+        </div>
+        <div class="row">
+            <div class="col-6 col-md-3">
+                <button type="submit" class="btn btn-primary form-control">Delete</button>
+            </div>
+            <div class="col-6 col-md-3">
+                <a asp-controller="Product" asp-action="Index" class="btn btn-secondary border form-control">
+                    Go To Products
+                </a>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
