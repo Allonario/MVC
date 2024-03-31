@@ -18,8 +18,8 @@ namespace MVCWebApplication.Areas.Admin.Controllers
         }
         public IActionResult Index()
         {
-            List<Product> objCategoryList = _unitOfWork.ProductRepository.GetAll().ToList();
-            return View(objCategoryList);
+            List<Product> objProductList = _unitOfWork.ProductRepository.GetAll(includeProperties:"Category").ToList();
+            return View(objProductList);
         }
 
         public IActionResult Upsert(int? id)
@@ -95,36 +95,67 @@ namespace MVCWebApplication.Areas.Admin.Controllers
             }
         }
 
-        public IActionResult Delete(int? id)
+        //public IActionResult Delete(int? id)
+        //{
+        //    if (id == null || id == 0)
+        //    {
+        //        return NotFound();
+        //    }
+        //    ProductVm productVm = new()
+        //    {
+        //        CategoryList = _unitOfWork.CategoryRepository
+        //        .GetAll().Select(u => new SelectListItem
+        //        {
+        //            Text = u.Name,
+        //            Value = u.Id.ToString()
+        //        }),
+        //        Product = _unitOfWork.ProductRepository.Get(c => c.Id == id)
+        //    };
+        //    if (productVm.Product == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return View(productVm);
+        //}
+
+        //[HttpPost, ActionName("Delete")]
+        //public IActionResult DeletePost(int? id)
+        //{
+        //    Product? product = _unitOfWork.ProductRepository.Get(c => c.Id == id);
+        //    if (product == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    if (!string.IsNullOrEmpty(product.ImageUrl))
+        //    {
+        //        var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, product.ImageUrl.TrimStart('\\'));
+        //        if (System.IO.File.Exists(oldImagePath))
+        //        {
+        //            System.IO.File.Delete(oldImagePath);
+        //        }
+        //    }
+        //    _unitOfWork.ProductRepository.Remove(product);
+        //    _unitOfWork.Save();
+        //    TempData["success"] = "Category deleted successfully";
+        //    return RedirectToAction("Index");
+        //}
+
+        #region API CALLS
+
+        [HttpGet]
+        public IActionResult GetAll()
         {
-            if (id == null || id == 0)
-            {
-                return NotFound();
-            }
-            ProductVm productVm = new()
-            {
-                CategoryList = _unitOfWork.CategoryRepository
-                .GetAll().Select(u => new SelectListItem
-                {
-                    Text = u.Name,
-                    Value = u.Id.ToString()
-                }),
-                Product = _unitOfWork.ProductRepository.Get(c => c.Id == id)
-            };
-            if (productVm.Product == null)
-            {
-                return NotFound();
-            }
-            return View(productVm);
+            List<Product> objProductList = _unitOfWork.ProductRepository.GetAll(includeProperties: "Category").ToList();
+            return Json(new {data = objProductList });
         }
 
-        [HttpPost, ActionName("Delete")]
-        public IActionResult DeletePost(int? id)
+        [HttpDelete]
+        public IActionResult Delete(int? id) 
         {
             Product? product = _unitOfWork.ProductRepository.Get(c => c.Id == id);
             if (product == null)
             {
-                return NotFound();
+                return Json(new {success = false, message = "Error while deleting"});
             }
             if (!string.IsNullOrEmpty(product.ImageUrl))
             {
@@ -136,8 +167,8 @@ namespace MVCWebApplication.Areas.Admin.Controllers
             }
             _unitOfWork.ProductRepository.Remove(product);
             _unitOfWork.Save();
-            TempData["success"] = "Category deleted successfully";
-            return RedirectToAction("Index");
+            return Json(new { success = false, message = "Error while deleting" });
         }
+        #endregion
     }
 }
